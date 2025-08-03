@@ -2,7 +2,7 @@
 
 import React, { createContext, useState, useEffect, useContext } from 'react';
 import { onAuthChange } from '../services/firebaseService';
-import { auth } from '../firebase'; // ローディング状態のために直接使う
+// import { auth } from '../firebase'; // 不要なため削除
 
 const AuthContext = createContext();
 

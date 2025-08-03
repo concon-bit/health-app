@@ -2,7 +2,7 @@
 
 import React from 'react';
 import { loginWithGoogle } from '../services/firebaseService';
-import styles from '../styles/App.css'; // 共通スタイルを流用
+// import styles from '../styles/App.css'; // 不要なため削除
 
 const Login = () => {
   const handleLogin = async () => {

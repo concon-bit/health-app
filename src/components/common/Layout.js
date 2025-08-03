@@ -3,7 +3,7 @@
 import React from 'react';
 import Header from './Header';
 import { logout } from '../../services/firebaseService';
-import styles from '../../styles/App.css';
+// import styles from '../../styles/App.css'; // 不要なため削除
 
 const Layout = ({ children }) => {
     const handleLogout = async () => {

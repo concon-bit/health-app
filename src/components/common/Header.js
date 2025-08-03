@@ -2,7 +2,7 @@
 
 import React from 'react';
 import { useAuth } from '../../contexts/AuthContext';
-import styles from '../../styles/App.css';
+// import styles from '../../styles/App.css'; // 不要なため削除
 
 const Header = () => {
     const { currentUser } = useAuth();
