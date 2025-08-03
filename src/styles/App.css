@@ -1,0 +1,155 @@
+/* src/styles/App.css */
+:root {
+  /* FullCalendar用に変数を調整 */
+  --fc-border-color: #e0e0e0;
+  --fc-daygrid-event-dot-width: 8px;
+
+  --primary-color: #ef476f;
+  --background-color: #f4f7f9;
+  --white: #fff;
+  --text-dark: #333;
+  --text-light: #666;
+  --border-color: #e0e0e0;
+
+  /* 背景色用の変数はそのまま利用 */
+  --day-bg-good: #f0fdf4;
+  --day-bg-bad: #fef2f2;
+  --day-bg-ok: #f0f9ff;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Hiragino Kaku Gothic ProN', 'Meiryo', sans-serif;
+  background-color: var(--background-color);
+  color: var(--text-dark);
+  margin: 0;
+  font-size: 16px;
+}
+
+.app-container {
+  max-width: 500px;
+  margin: 0 auto;
+  min-height: 100vh;
+  background-color: var(--white);
+  box-shadow: 0 0 20px rgba(0,0,0,0.1);
+  display: flex;
+  flex-direction: column;
+}
+
+/* (以下、変更なし) */
+.app-header {
+  padding: 1rem;
+  border-bottom: 1px solid var(--border-color);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+}
+.header-title-container {
+  flex-grow: 1;
+  text-align: center;
+}
+.app-header h1 {
+  margin: 0;
+  font-size: 1.5rem;
+  color: var(--primary-color);
+}
+.user-info {
+  position: absolute;
+  right: 1rem;
+}
+.user-info img {
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 50%;
+}
+.app-main {
+  padding: 1rem;
+  flex-grow: 1;
+}
+.app-footer {
+  padding: 1rem;
+  text-align: center;
+  border-top: 1px solid var(--border-color);
+}
+.logout-button {
+  background: none;
+  border: 1px solid #ccc;
+  color: var(--text-light);
+  padding: 0.5rem 1rem;
+  border-radius: 20px;
+  cursor: pointer;
+  font-size: 0.9rem;
+}
+.login-page {
+  justify-content: center;
+  align-items: center;
+}
+.login-container {
+  text-align: center;
+  padding: 40px;
+}
+.login-container h1 {
+  color: var(--primary-color);
+  font-size: 2rem;
+}
+.login-container p {
+  font-size: 1rem;
+  color: var(--text-light);
+  margin-bottom: 2rem;
+}
+.login-button {
+  background-color: var(--primary-color);
+  color: white;
+  border: none;
+  padding: 0.75rem 1.5rem;
+  font-size: 1rem;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+/* --- FullCalendar Custom Styles --- */
+
+/* 曜日ヘッダーの色を変更 (日:赤, 土:青) */
+.fc .fc-col-header-cell-cushion {
+  text-decoration: none !important;
+}
+.fc-day-sun .fc-col-header-cell-cushion {
+  color: red !important;
+}
+.fc-day-sat .fc-col-header-cell-cushion {
+  color: blue !important;
+}
+
+/* [新しい修正] 日付番号を左上に配置する */
+.fc .fc-daygrid-day-top {
+    /* コンテナの並び順を通常(左から右)に変更 */
+    flex-direction: row !important;
+}
+.fc .fc-daygrid-day-number {
+    /* 左上に見やすくするための余白を設定 */
+    padding: 4px !important;
+}
+
+/* [修正] カレンダーイベントの汎用スタイル */
+.calendar-event {
+    background: transparent !important;
+    border: none !important;
+    /* 上下の余白を調整して、イベント全体を少し下に配置 */
+    padding: 10px 0 2px 0 !important;
+}
+
+/* イベントのデフォルトのタイトルは非表示にする */
+.calendar-event .fc-event-title {
+    display: none;
+}
+
+/* アイコンを格納するコンテナのスタイル */
+.calendar-event-icons {
+    display: flex;
+    gap: 6px; /* アイコン間の間隔を少し広げる */
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    /* アイコンのサイズを大きくする */
+    font-size: 1.2rem;
+}

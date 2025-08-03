@@ -1,0 +1,173 @@
+/* src/styles/DailyLogForm.module.css */
+.formContainer {
+  background-color: var(--white);
+  padding: 1.5rem;
+  border-radius: 12px;
+  border: 1px solid var(--border-color);
+}
+
+.formContainer h3 {
+  margin-top: 0;
+  margin-bottom: 2rem;
+  font-size: 1.2rem;
+  text-align: center;
+}
+
+.formGroup {
+  margin-bottom: 2rem;
+}
+
+.formGroup label,
+.tempLabel {
+  display: block;
+  margin-bottom: 0.75rem;
+  font-weight: 600;
+  color: #555;
+}
+
+.tempContainer {
+  padding: 0 1rem;
+}
+.tempDisplay {
+  text-align: center;
+  font-size: 2rem;
+  font-weight: bold;
+  color: var(--primary-color);
+  margin-bottom: 1rem;
+}
+.tempDisplay span {
+  font-size: 1rem;
+  color: var(--text-light);
+  margin-left: 0.25rem;
+}
+
+.buttonGroup {
+  display: flex;
+  justify-content: center;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+}
+
+.iconButton {
+  background-color: #f0f0f0;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  padding: 0.5rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  width: 60px;
+  height: 60px;
+  transition: all 0.2s ease;
+}
+
+.iconButton:hover {
+  background-color: #e0e0e0;
+}
+
+.iconButton.selected {
+  background-color: var(--primary-color);
+  color: white;
+  border-color: var(--primary-color);
+}
+
+.buttonIcon {
+    font-size: 1.5rem;
+}
+
+.buttonLabel {
+  font-size: 0.7rem;
+  margin-top: 0.25rem;
+  color: #555;
+  white-space: nowrap;
+}
+
+.iconButton.selected .buttonLabel {
+  color: white;
+}
+
+.poopButton {
+    width: 80px;
+}
+.poopButton .buttonIcon {
+    font-size: 1.2rem;
+    font-weight: bold;
+}
+
+.formContainer textarea {
+  width: 100%;
+  padding: 0.75rem;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  box-sizing: border-box;
+  font-size: 1rem;
+  resize: vertical;
+}
+
+.saveButton {
+  width: 100%;
+  padding: 0.75rem;
+  border: none;
+  background-color: var(--primary-color);
+  color: white;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 1.1rem;
+  font-weight: bold;
+  margin-top: 1.5rem;
+  transition: background-color 0.3s ease;
+}
+.saveButton:disabled {
+    background-color: #ccc;
+}
+
+/* 保存成功時のスタイル */
+.saveButton.success {
+    background-color: #22c55e; /* 緑色に変更 */
+    cursor: default;
+}
+
+.subSection {
+  margin-top: 2rem;
+  margin-bottom: 2rem;
+  border-top: 1px solid #f0f0f0;
+  border-bottom: 1px solid #f0f0f0;
+  padding: 1rem 0;
+}
+
+.toggleButton {
+  width: 100%;
+  background: none;
+  border: none;
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--text-light);
+  cursor: pointer;
+  text-align: left;
+  padding: 0.5rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.toggleButton:hover {
+  color: var(--primary-color);
+}
+
+.subContent {
+  padding-top: 1.5rem;
+  animation: fadeIn 0.5s ease-in-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

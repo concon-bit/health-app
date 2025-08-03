@@ -1,0 +1,9 @@
+/* src/styles/CalendarView.module.css */
+
+/* カレンダーの下に表示される説明文のスタイル */
+.instruction {
+  text-align: center;
+  font-size: 0.9rem;
+  color: var(--text-light);
+  margin-top: 1rem;
+}
