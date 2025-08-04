@@ -12,7 +12,7 @@ import styles from './PeriodCalendar.module.css';
 import { FaMoon, FaRegCircle } from 'react-icons/fa'; // FaPencilAltを削除
 
 const PeriodCalendarView = () => {
-  const { records, cycleInfo, dailyLogs, ongoingPeriodStartDate } = useSelector((state) => state.period);
+  const { records, cycleInfo, ongoingPeriodStartDate } = useSelector((state) => state.period);
   const [modalDate, setModalDate] = useState(null);
 
   const handleDateClick = (clickInfo) => {

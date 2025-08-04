@@ -2,9 +2,9 @@
 
 import React from 'react';
 import { 
-  FaGrinStars, FaSmile, FaMeh, FaFrown, FaTired,
-  FaRegCheckCircle, FaRegTimesCircle, FaDumbbell, FaHeadSideVirus, FaGlassMartiniAlt,
-  FaBed, FaGrinBeam, FaMehRollingEyes, FaTired as FaTiredStress, FaBeer
+  FaGrinStars, FaSmile, FaMeh, FaFrown, FaTired,
+  FaRegCheckCircle, FaRegTimesCircle, FaHeadSideVirus, FaGlassMartiniAlt, // FaDumbbell を削除
+  FaBed, FaGrinBeam, FaMehRollingEyes, FaTired as FaTiredStress, FaBeer
 } from 'react-icons/fa';
 import { BsFillCircleFill } from 'react-icons/bs';
 

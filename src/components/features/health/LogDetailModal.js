@@ -2,9 +2,9 @@
 
 import React from 'react';
 import { format } from 'date-fns';
-import { MOOD_OPTIONS, POOP_OPTIONS, SYMPTOM_OPTIONS } from '../../../constants/appConstants'; // << 修正
-import { MOOD_ICONS, POOP_ICONS, SYMPTOM_ICONS } from '../../../constants/iconConstants'; // << 修正
-import styles from './LogDetailModal.module.css'; // << 修正
+import { MOOD_OPTIONS, SYMPTOM_OPTIONS } from '../../../constants/appConstants'; // POOP_OPTIONS を削除
+import { MOOD_ICONS, POOP_ICONS } from '../../../constants/iconConstants'; // SYMPTOM_ICONS を削除
+import styles from './LogDetailModal.module.css';
 
 const LogDetailModal = ({ log, onClose }) => {
   if (!log) return null;

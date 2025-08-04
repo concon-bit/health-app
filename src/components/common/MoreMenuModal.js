@@ -3,8 +3,7 @@ import React from 'react';
 import styles from '../../styles/MoreMenuModal.module.css';
 import { useDispatch } from 'react-redux';
 import { setActiveMode, toggleMoreMenu } from '../../redux/uiSlice';
-import { FaHeartbeat, FaVenus, FaPills, FaRunning, FaSignOutAlt, FaUserCog } from 'react-icons/fa'; // <<< [変更]
-import { logout } from '../../services/firebaseService';
+import { FaHeartbeat, FaVenus, FaPills, FaRunning, FaSignOutAlt, FaUserCog } from 'react-icons/fa'; 
 
 const MoreMenuModal = () => {
   const dispatch = useDispatch();
