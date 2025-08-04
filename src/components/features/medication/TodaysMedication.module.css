@@ -1,0 +1,70 @@
+/* src/components/features/medication/TodaysMedication.module.css */
+.container {
+    background-color: #fff8f9;
+    border: 1px solid #fee2e8;
+    border-radius: 12px;
+    padding: 1rem 1.5rem;
+    margin-bottom: 2rem;
+}
+.container h3 {
+    margin-top: 0;
+    margin-bottom: 1rem; /* --- [修正] 少し詰めました --- */
+}
+.timingGroup { 
+    margin-bottom: 1rem; /* --- [修正] 少し詰めました --- */
+}
+.timingGroup:last-child { 
+    margin-bottom: 0; 
+}
+.timingGroup h4 {
+    margin: 0 0 0.75rem 0; /* --- [修正] 少し詰めました --- */
+    font-size: 1rem;
+    border-bottom: 2px solid #fecdd3;
+    padding-bottom: 0.5rem;
+}
+
+.doseItem { 
+    margin-bottom: 0.5rem; /* --- [修正] 少し詰めました --- */
+}
+.doseItem:last-child {
+    margin-bottom: 0;
+}
+
+.statusButton {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    background: none;
+    border: none;
+    padding: 0.25rem 0; /* --- [追加] クリック範囲を少し確保 --- */
+    width: 100%;
+    text-align: left;
+}
+
+.statusIcon {
+    font-size: 1.8rem;
+    margin-right: 1rem;
+    transition: color 0.2s ease;
+}
+
+.pending { color: #cbd5e1; }
+.statusButton:hover .pending { color: #94a3b8; }
+.taken { color: #22c55e; }
+.skipped { color: #f43f5e; }
+
+.medInfo {
+    display: flex;
+    align-items: baseline;
+    gap: 0.5rem;
+}
+.medName {
+    font-weight: 600;
+    font-size: 1rem;
+    word-break: break-all;
+}
+.medQuantity { 
+    font-size: 0.95rem;
+    color: var(--text-light); 
+    font-weight: 500;
+    white-space: nowrap;
+}

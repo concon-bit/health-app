@@ -1,0 +1,211 @@
+/* src/styles/DailyLogForm.module.css */
+.formContainer {
+  background-color: var(--white);
+  padding: 1.5rem;
+  border-radius: 12px;
+  border: 1px solid var(--border-color);
+}
+
+.dateNavContainer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2rem;
+}
+
+.dateHeader {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  flex-grow: 1;
+  justify-content: center;
+}
+
+.dateHeader h3 {
+  margin: 0;
+  font-size: 1.2rem;
+  text-align: center;
+}
+
+.lockButton {
+  background: none;
+  border: none;
+  font-size: 1.1rem;
+  color: var(--text-light);
+  cursor: pointer;
+  padding: 0.5rem;
+  display: flex;
+  align-items: center;
+  border-radius: 50%;
+  transition: all 0.2s ease;
+}
+.lockButton:hover {
+  background-color: #f0f0f0;
+}
+
+.dateNavButton {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0.5rem;
+  color: var(--text-light);
+  font-size: 1.2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  transition: background-color 0.2s, color 0.2s;
+}
+
+.dateNavButton:hover {
+  background-color: #f0f0f0;
+  color: var(--primary-color);
+}
+
+/* --- [修正] フォーム全体を無効化する際のスタイル --- */
+.formFields {
+  border: none;
+  padding: 0;
+  margin: 0;
+  transition: opacity 0.3s ease;
+}
+/* --- [修正] disabledでもopacityは変更せず、クリック操作のみ無効化する --- */
+.formFields:disabled {
+  pointer-events: none;
+}
+
+
+.formGroup {
+  margin-bottom: 2rem;
+}
+
+.formGroup label,
+.tempLabel {
+  display: block;
+  margin-bottom: 0.75rem;
+  font-weight: 600;
+  color: #555;
+}
+
+.tempContainer {
+  padding: 0 1rem;
+}
+.tempDisplay {
+  text-align: center;
+  font-size: 2rem;
+  font-weight: bold;
+  color: var(--primary-color);
+  margin-bottom: 1rem;
+}
+.tempDisplay span {
+  font-size: 1rem;
+  color: var(--text-light);
+  margin-left: 0.25rem;
+}
+
+.buttonGroup {
+  display: flex;
+  justify-content: center;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.iconButton {
+  background-color: transparent;
+  border: 2px solid transparent;
+  border-radius: 12px;
+  padding: 0.5rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  flex-grow: 1;
+  max-width: 80px;
+  min-height: 70px;
+  transition: all 0.2s ease;
+}
+
+.iconButton:hover {
+  background-color: #f9fafb;
+}
+
+.iconButton.selected {
+  background-color: #fef2f2;
+  border-color: #ef476f;
+}
+
+.iconButton.selected .buttonLabel {
+  color: #be123c;
+  font-weight: 700;
+}
+
+.buttonIcon {
+  font-size: 1.8rem;
+  height: 28px;
+  display: flex;
+  align-items: center;
+}
+
+.buttonIcon svg {
+  color: #6b7280;
+  transition: color 0.2s ease;
+}
+
+.iconButton.selected .buttonIcon svg {
+  color: #ef476f;
+}
+
+.buttonLabel {
+  font-size: 0.8rem;
+  margin-top: 0.5rem;
+  color: #374151;
+  white-space: nowrap;
+  font-weight: 500;
+}
+
+.poopButton .buttonIcon {
+  font-size: 1.5rem;
+}
+
+.formContainer textarea {
+  width: 100%; padding: 0.75rem; border: 1px solid #ccc; border-radius: 8px;
+  box-sizing: border-box; font-size: 1rem; resize: vertical;
+}
+
+form {
+  display: contents;
+}
+.saveButton {
+  width: 100%; padding: 0.75rem; border: none; background-color: var(--primary-color);
+  color: white; border-radius: 8px; cursor: pointer; font-size: 1.1rem;
+  font-weight: bold; margin-top: 1.5rem; transition: background-color 0.3s ease;
+}
+.saveButton.success {
+  background-color: #22c55e;
+}
+/* --- [修正] disabled属性がついた時のスタイル --- */
+.saveButton:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+}
+
+
+.subSection {
+  margin-top: 2rem; margin-bottom: 2rem; border-top: 1px solid #f0f0f0;
+  border-bottom: 1px solid #f0f0f0; padding: 1rem 0;
+}
+
+.toggleButton {
+  width: 100%; background: none; border: none; font-size: 1rem;
+  font-weight: 600; color: var(--text-light); cursor: pointer; text-align: left;
+  padding: 0.5rem; display: flex; justify-content: space-between; align-items: center;
+}
+.toggleButton:hover { color: var(--primary-color); }
+
+.subContent { padding-top: 1.5rem; animation: fadeIn 0.5s ease-in-out; }
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(-10px); }
+  to { opacity: 1; transform: translateY(0); }
+}

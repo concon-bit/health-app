@@ -1,53 +1,10 @@
-/* src/styles/Dashboard.module.css */
-.tabContainer {
-  display: flex;
-  justify-content: space-around;
-  border-bottom: 1px solid var(--border-color);
-  margin-bottom: 1.5rem;
-}
-
-.tabButton {
-  background: none;
-  border: none;
-  padding: 0.8rem 1rem;
-  font-size: 1rem;
-  font-weight: bold;
-  color: var(--text-light);
-  cursor: pointer;
-  border-bottom: 3px solid transparent;
-  transition: all 0.2s ease;
-}
-
-.tabButton.active {
-  color: var(--primary-color);
-  border-bottom-color: var(--primary-color);
-}
+/* src/components/features/health/HealthDashboard.module.css */
 
 .contentArea {
   padding: 0 0.5rem;
 }
 
-/* Report Card Styles */
-.reportCard {
-    background-color: #fef8f9;
-    border: 1px solid #fde2e8;
-    border-radius: 8px;
-    padding: 1rem;
-    margin-top: 1rem;
-}
-.reportCard p {
-    margin: 0.5rem 0;
-    line-height: 1.6;
-}
-.reportAdvice {
-    margin-top: 1rem;
-    padding-top: 1rem;
-    border-top: 1px dashed #fde2e8;
-    font-style: italic;
-    color: var(--primary-color);
-}
-
-/* --- [ここから新規追加] グラフコンテナと設定モーダル用のスタイル --- */
+/* グラフコンテナと設定モーダル用のスタイル */
 .chartContainer {
   position: relative; /* 歯車アイコンを配置するため */
 }
@@ -134,7 +91,7 @@
   background-color: #f9dadd;
 }
 
-/* --- トグルスイッチのスタイル --- */
+/* トグルスイッチのスタイル */
 .switch {
   position: relative;
   display: inline-block;
@@ -175,7 +132,7 @@ input:checked + .slider:before {
   transform: translateX(20px);
 }
 
-/* --- アニメーション --- */
+/* アニメーション */
 @keyframes fadeInBackdrop {
   from { opacity: 0; }
   to { opacity: 1; }

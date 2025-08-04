@@ -1,0 +1,84 @@
+/* src/styles/PeriodDashboard.module.css */
+
+.container {
+  padding: 0; /* 親のpaddingをなくす */
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+  padding: 0 1rem; /* 左右のpaddingをここで指定 */
+}
+.header h2 {
+  font-size: 1.2rem;
+  margin: 0;
+}
+
+/* ... (summaryCard, summaryItem などのスタイルは変更なし) ... */
+.summaryCard {
+  background-color: #fff0f3; padding: 1rem; border-radius: 16px;
+  margin: 0 1rem 1rem 1rem; /* 左右のmarginを追加 */
+  display: flex; justify-content: space-around; text-align: center;
+}
+.summaryItem {
+  flex: 1; border-right: 1px solid rgba(239, 71, 111, 0.2);
+}
+.summaryItem:last-child { border-right: none; }
+.summaryItem label { font-size: 0.8rem; color: #a14357; }
+.summaryItem .mainDate { font-size: 2rem; font-weight: bold; color: #c51162; margin: 0.25rem 0; }
+.summaryItem .subText { font-size: 0.8rem; color: #a14357; margin: 0; }
+.fertilityCircle {
+  width: 60px; height: 60px; border-radius: 50%; border: 5px solid #f59e0b;
+  margin: 0 auto; display: flex; align-items: center; justify-content: center;
+  font-size: 0.8rem; font-weight: bold; color: #b45309; margin-top: 0.25rem;
+}
+
+.cycleInfoBox {
+  background-color: #f9fafb; border: 1px solid #f3f4f6; padding: 1rem;
+  border-radius: 12px; display: flex; justify-content: space-around;
+  margin: 0 1rem 1.5rem 1rem; /* 左右のmarginを追加 */
+  font-size: 0.9rem;
+}
+.cycleInfoBox strong { font-size: 1.2rem; color: var(--primary-color); }
+
+.actions {
+  padding: 0 1rem; /* 左右のpaddingを追加 */
+}
+.actions .logButton {
+  width: 100%; padding: 1rem; font-size: 1.1rem; font-weight: bold; color: white;
+  background-color: var(--primary-color); border: none; border-radius: 12px;
+  cursor: pointer; transition: background-color 0.2s ease;
+}
+
+/* フローティングアクションボタン (FAB) */
+.fab {
+  position: fixed;
+  bottom: 80px;
+  right: calc(50% - 220px);
+  /* --- [修正] 参考画像のデザインに合わせる --- */
+  width: 70px;
+  height: 70px;
+  background-color: #374151; /* ダークグレー */
+  color: white;
+  border: none;
+  border-radius: 50%;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.25);
+  display: flex;
+  flex-direction: column; /* アイコンとテキストを縦に並べる */
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  font-size: 0.75rem;
+  font-weight: bold;
+  cursor: pointer;
+  z-index: 999;
+  transition: transform 0.2s ease;
+}
+.fab svg {
+    font-size: 1.5rem;
+}
+.fab:hover {
+  transform: scale(1.05);
+}

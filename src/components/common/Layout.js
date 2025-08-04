@@ -2,17 +2,14 @@
 
 import React from 'react';
 import Header from './Header';
-import { logout } from '../../services/firebaseService';
-// import styles from '../../styles/App.css'; // 不要なため削除
+import Footer from './Footer';
+import MoreMenuModal from './MoreMenuModal';
+import NotificationManager from './NotificationManager';
+import { useSelector } from 'react-redux';
 
 const Layout = ({ children }) => {
-    const handleLogout = async () => {
-        try {
-            await logout();
-        } catch (error) {
-            console.error("ログアウトに失敗しました:", error);
-        }
-    };
+    const showMoreMenu = useSelector((state) => state.ui.showMoreMenu);
+    const activeMode = useSelector((state) => state.ui.activeMode);
 
     return (
         <div className="app-container">
@@ -20,9 +17,10 @@ const Layout = ({ children }) => {
             <main className="app-main">
                 {children}
             </main>
-            <footer className="app-footer">
-                <button onClick={handleLogout} className="logout-button">ログアウト</button>
-            </footer>
+            <Footer />
+            {showMoreMenu && <MoreMenuModal />}
+            {/* --- [修正] activeModeが'medication'の時だけ通知マネージャーを表示 --- */}
+            {activeMode === 'medication' && <NotificationManager />}
         </div>
     );
 };
