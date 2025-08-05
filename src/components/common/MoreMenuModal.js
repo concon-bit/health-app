@@ -3,6 +3,8 @@ import React from 'react';
 import styles from '../../styles/MoreMenuModal.module.css';
 import { useDispatch } from 'react-redux';
 import { setActiveMode, toggleMoreMenu } from '../../redux/uiSlice';
+// [追加] firebaseService から logout 関数をインポートします
+import { logout } from '../../services/firebaseService';
 import { FaHeartbeat, FaVenus, FaPills, FaRunning, FaSignOutAlt, FaUserCog } from 'react-icons/fa'; 
 
 const MoreMenuModal = () => {
@@ -12,7 +14,17 @@ const MoreMenuModal = () => {
     dispatch(setActiveMode(mode));
   };
 
-  const handleLogout = async () => { /* ... (変更なし) ... */ };
+  // [修正] ログアウト処理を、ページリロードを含めて確実に実行するようにします
+  const handleLogout = async () => {
+    try {
+      await logout();
+      // ログアウト成功後、ページをリロードして確実にログイン画面に戻します
+      window.location.reload();
+    } catch (error) {
+      console.error("ログアウトに失敗しました:", error);
+      alert("ログアウトに失敗しました。");
+    }
+  };
 
   return (
     <div className={styles.modalBackdrop} onClick={() => dispatch(toggleMoreMenu())}>

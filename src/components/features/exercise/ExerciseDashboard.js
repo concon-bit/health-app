@@ -171,7 +171,15 @@ const ExerciseDashboard = () => {
         </div>
       </div>
 
-      <div className={styles.summary}><FaFire /><span>総消費カロリー (目安)</span><strong>{totalCalories} kcal</strong></div>
+      {/* ▼▼▼ ここから修正 ▼▼▼ */}
+      <div className={styles.summary}>
+        <FaFire />
+        <span>総消費カロリー (目安)</span>
+        <strong>{totalCalories}</strong>
+        <span>&nbsp;キロカロリー</span>
+      </div>
+      {/* ▲▲▲ ここまで修正 ▲▲▲ */}
+
       <div className={styles.logList}>
         {loading === 'pending' && <p className={styles.emptyState}>読み込み中...</p>}
         {loading !== 'pending' && logs.length > 0 && logs.map((log, index) => renderLogCard(log, index))}
