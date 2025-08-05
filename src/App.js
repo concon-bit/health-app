@@ -17,9 +17,7 @@ function App() {
 
   useEffect(() => {
     const unsubscribe = onAuthChange((user) => {
-      // ▼▼▼【デバッグ用コード】▼▼▼
-      console.log("Firebase認証状態が変化しました。 Userオブジェクト:", user);
-      // ▲▲▲【デバッグ用コード】▲▲▲
+      // デバッグ用のconsole.logを削除しました
 
       if (user) {
         const serializedUser = { uid: user.uid, email: user.email, displayName: user.displayName };
