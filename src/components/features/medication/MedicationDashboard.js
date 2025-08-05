@@ -14,7 +14,8 @@ import { isPastDue } from '../../../utils/timeUtils';
 
 const MedicationDashboard = () => {
   const dispatch = useDispatch();
-  const { items: medications, history } = useSelector((state) => state.medications);
+  // ▼▼▼ [修正] historyLoading を Redux ストアから取得します ▼▼▼
+  const { items: medications, history, historyLoading } = useSelector((state) => state.medications);
   const userId = useSelector((state) => state.user.currentUser ? state.user.currentUser.uid : null);
   const showCalendar = useSelector((state) => state.ui.showMedicationCalendar);
   const [isFormOpen, setIsFormOpen] = useState(false);
@@ -28,7 +29,12 @@ const MedicationDashboard = () => {
   }, [dispatch, userId]);
 
   useEffect(() => {
-    if (!userId) return;
+    // ▼▼▼ [修正] 今日の服薬履歴の読み込みが完了してから、飲み忘れチェックを実行するようにします ▼▼▼
+    if (!userId || historyLoading !== 'succeeded') {
+      return; // ユーザーがいない場合、または履歴の読み込みが完了していない場合は何もしない
+    }
+    // ▲▲▲ [修正] ▲▲▲
+
     const todayStr = format(new Date(), 'yyyy-MM-dd');
     const lastCheck = sessionStorage.getItem('medicationCheckTime');
     if (lastCheck === todayStr) return;
@@ -51,7 +57,8 @@ const MedicationDashboard = () => {
       console.log(`${dosesToCheck.length}件の飲み忘れを自動記録しました。`);
     }
     sessionStorage.setItem('medicationCheckTime', todayStr);
-  }, [medications, history, dispatch, userId]);
+    // ▼▼▼ [修正] 依存配列に historyLoading を追加します ▼▼▼
+  }, [medications, history, historyLoading, dispatch, userId]);
 
   const handleAddNew = () => { setMedicationToEdit(null); setIsFormOpen(true); };
   const handleEdit = (med) => { setMedicationToEdit(med); setIsFormOpen(true); };
