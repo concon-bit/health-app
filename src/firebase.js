@@ -1,7 +1,9 @@
 // src/firebase.js
 import { initializeApp } from "firebase/app";
+// [修正] 認証状態を永続化するための機能を追加でインポートします
+import { getAuth, GoogleAuthProvider, setPersistence, browserLocalPersistence } from "firebase/auth";
 import { getFirestore } from "firebase/firestore";
-import { getAuth, GoogleAuthProvider } from "firebase/auth";
+
 
 // .envファイルから環境変数を読み込む
 const firebaseConfig = {
@@ -20,3 +22,6 @@ const app = initializeApp(firebaseConfig);
 export const db = getFirestore(app);
 export const auth = getAuth(app);
 export const googleProvider = new GoogleAuthProvider();
+
+// [追加] 認証状態の永続化を設定します。これによりログイン状態が失われにくくなります。
+setPersistence(auth, browserLocalPersistence);

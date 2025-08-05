@@ -1,16 +1,16 @@
 // src/services/firebaseService.js
 
 import { auth, googleProvider, db } from '../firebase';
-// [修正] signInWithPopup を signInWithRedirect に変更します
-import { signInWithRedirect, onAuthStateChanged, signOut } from "firebase/auth";
+// [修正] signInWithRedirect を signInWithPopup に戻します
+import { signInWithPopup, onAuthStateChanged, signOut } from "firebase/auth";
 import { collection, query, where, getDocs, addDoc, doc, setDoc, getDoc, deleteDoc } from "firebase/firestore";
 
 // --- Authentication ---
 export const onAuthChange = (callback) => { return onAuthStateChanged(auth, callback); };
 
-// [修正] ポップアップ方式からリダイレクト方式に変更します
+// [修正] ログイン方式をポップアップ方式に戻します
 export const loginWithGoogle = () => {
-  return signInWithRedirect(auth, googleProvider);
+  return signInWithPopup(auth, googleProvider);
 };
 
 export const logout = () => { return signOut(auth); };
@@ -269,12 +269,12 @@ export const fetchExerciseLogsForMonth = async (userId, dateInMonth) => {
 };
 
 // --- Firestore (User Profiles) ---
-const PROFILES_COLlection = "profiles";
+const PROFILES_COLLECTION = "profiles";
 
 export const fetchUserProfile = async (userId) => {
   if (!userId) return null;
   try {
-    const docRef = doc(db, PROFILES_COLlection, userId);
+    const docRef = doc(db, PROFILES_COLLECTION, userId);
     const docSnap = await getDoc(docRef);
     return docSnap.exists() ? docSnap.data() : null;
   } catch (error) {
@@ -286,7 +286,7 @@ export const fetchUserProfile = async (userId) => {
 export const saveUserProfile = async (userId, profileData) => {
   if (!userId) throw new Error("ユーザーIDは必須です。");
   try {
-    const docRef = doc(db, PROFILES_COLlection, userId);
+    const docRef = doc(db, PROFILES_COLLECTION, userId);
     await setDoc(docRef, profileData, { merge: true });
   } catch (error) {
     console.error("プロファイルの保存に失敗しました:", error);
