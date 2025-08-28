@@ -90,12 +90,42 @@
 .tempContainer {
   padding: 0 1rem;
 }
+
+/* ▼▼▼ [ここから追加] ▼▼▼ */
+.tempControlWrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+.tempAdjustButton {
+  background: none;
+  border: 1px solid var(--border-color);
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  font-size: 1.2rem;
+  color: var(--text-light);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+.tempAdjustButton:hover {
+  background-color: #f0f0f0;
+  color: var(--primary-color);
+}
+/* ▲▲▲ [ここまで追加] ▲▲▲ */
+
 .tempDisplay {
   text-align: center;
   font-size: 2rem;
   font-weight: bold;
   color: var(--primary-color);
-  margin-bottom: 1rem;
+  /* ▼▼▼ [修正] ボタンと並べるため、下マージンを削除 ▼▼▼ */
+  margin-bottom: 0; 
 }
 .tempDisplay span {
   font-size: 1rem;

@@ -6,7 +6,8 @@ import Slider from 'rc-slider';
 import 'rc-slider/assets/index.css';
 import { MOOD_OPTIONS, POOP_OPTIONS, SYMPTOM_OPTIONS, SLEEP_OPTIONS, STRESS_OPTIONS, ALCOHOL_OPTIONS } from '../../../constants/appConstants';
 import { MOOD_ICONS, POOP_ICONS, SYMPTOM_ICONS, SLEEP_ICONS, STRESS_ICONS, ALCOHOL_ICONS } from '../../../constants/iconConstants';
-import { FaChevronLeft, FaChevronRight, FaLock, FaLockOpen } from 'react-icons/fa';
+// ▼▼▼ [修正] 左右の矢印アイコンをインポートします ▼▼▼
+import { FaChevronLeft, FaChevronRight, FaLock, FaLockOpen, FaCaretLeft, FaCaretRight } from 'react-icons/fa';
 import styles from './DailyLogForm.module.css';
 import { useSelector, useDispatch } from 'react-redux';
 import { changeDateBy } from '../../../redux/uiSlice';
@@ -77,6 +78,17 @@ const DailyLogForm = () => {
     setFormData(prev => ({ ...prev, [field]: value }));
   };
 
+  // ▼▼▼ [追加] 体温を微調整する関数 ▼▼▼
+  const adjustTemp = (amount) => {
+    setFormData(prev => {
+        const newTemp = parseFloat((prev.temp + amount).toFixed(2));
+        if (newTemp >= 35.0 && newTemp <= 42.0) {
+            return { ...prev, temp: newTemp };
+        }
+        return prev;
+    });
+  };
+
   const handleToggleChange = (field, subField, value) => {
     setFormData(prev => ({
       ...prev,
@@ -114,7 +126,13 @@ const DailyLogForm = () => {
           <div className={styles.formGroup}>
             <div className={styles.tempLabel}>体温</div>
             <div className={styles.tempContainer}>
-              <div className={styles.tempDisplay}>{typeof formData.temp === 'number' ? formData.temp.toFixed(2) : '...'}<span>°C</span></div>
+              {/* ▼▼▼ [ここから修正] ▼▼▼ */}
+              <div className={styles.tempControlWrapper}>
+                <button type="button" onClick={() => adjustTemp(-0.01)} className={styles.tempAdjustButton}><FaCaretLeft /></button>
+                <div className={styles.tempDisplay}>{typeof formData.temp === 'number' ? formData.temp.toFixed(2) : '...'}<span>°C</span></div>
+                <button type="button" onClick={() => adjustTemp(0.01)} className={styles.tempAdjustButton}><FaCaretRight /></button>
+              </div>
+              {/* ▲▲▲ [ここまで修正] ▲▲▲ */}
               <Slider min={35.0} max={42.0} step={0.01} value={formData.temp} onChange={(val) => handleFormChange('temp', val)} trackStyle={{ backgroundColor: '#fecdd3' }} handleStyle={{ borderColor: '#ef476f' }} railStyle={{ backgroundColor: '#e5e7eb' }} />
             </div>
           </div>
