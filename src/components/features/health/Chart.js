@@ -1,12 +1,12 @@
 // src/components/features/health/Chart.js
 
-import React from 'react'; // 'useMemo' を削除
+import React from 'react';
 import Highcharts from 'highcharts';
 import HighchartsReact from 'highcharts-react-official';
 import styles from './HealthDashboard.module.css';
 import { useSelector } from 'react-redux';
-// ▼▼▼ [修正] addDays と subDays のみインポートします ▼▼▼
-import { isValid, subDays, addDays } from 'date-fns';
+// ▼▼▼ [修正] 'subDays' を削除します ▼▼▼
+import { isValid, addDays } from 'date-fns';
 // ▲▲▲ [修正] ▲▲▲
 
 Highcharts.setOptions({
@@ -33,12 +33,9 @@ const Chart = () => {
         return [timestamp, log.temp ? parseFloat(log.temp) : null];
     });
 
-    // ▼▼▼ [修正] 不要な変数 'thirtyDaysAgo' と 'xAxisMin' を削除 ▼▼▼
+    // 'thirtyDaysAgo' と 'xAxisMin' を削除
     const today = new Date();
-    // const thirtyDaysAgo = subDays(today, 30); // 削除
-    // const xAxisMin = thirtyDaysAgo.getTime(); // 削除
     const xAxisMax = addDays(today, 1).getTime(); // 今日+1日の余白
-    // ▲▲▲ [修正] ▲▲▲
 
     // Y軸（縦軸）の設定
     const yAxisConfig = [
