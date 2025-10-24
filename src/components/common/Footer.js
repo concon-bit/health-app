@@ -2,7 +2,7 @@
 
 import React from 'react';
 import styles from '../../styles/Footer.module.css';
-import { FaHeartbeat, FaVenus, FaEllipsisH } from 'react-icons/fa'; // アイコンを変更
+import { FaHeartbeat, FaEllipsisH } from 'react-icons/fa'; // アイコンを変更
 import { useSelector, useDispatch } from 'react-redux';
 import { setActiveMode, toggleMoreMenu } from '../../redux/uiSlice';
 
@@ -11,7 +11,7 @@ const Footer = () => {
   const dispatch = useDispatch();
 
   // 「その他」メニューに表示するモード
-  const moreMenuModes = ['medication', 'exercise'];
+  const moreMenuModes = [];
 
   return (
     <footer className={styles.appFooter}>
@@ -21,13 +21,6 @@ const Footer = () => {
       >
         <FaHeartbeat />
         <span>体調管理</span>
-      </button>
-      <button 
-        className={`${styles.navButton} ${activeMode === 'period' ? styles.active : ''}`}
-        onClick={() => dispatch(setActiveMode('period'))}
-      >
-        <FaVenus />
-        <span>生理周期</span>
       </button>
       <button 
         className={`${styles.navButton} ${moreMenuModes.includes(activeMode) ? styles.active : ''}`}

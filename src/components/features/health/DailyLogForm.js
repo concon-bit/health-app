@@ -17,7 +17,7 @@ const DailyLogForm = () => {
   const dispatch = useDispatch();
   const selectedDateISO = useSelector((state) => state.ui.selectedDate);
   const { items: logs, loading: logLoading } = useSelector((state) => state.logs) || { items: [] };
-  const { currentUser, profile: userProfile } = useSelector((state) => state.user);
+  const { currentUser } = useSelector((state) => state.user);
   const selectedDate = useMemo(() => new Date(selectedDateISO), [selectedDateISO]);
   const dateStr = useMemo(() => format(selectedDate, 'yyyy-MM-dd'), [selectedDate]);
   const [showSuccess, setShowSuccess] = useState(false);
@@ -29,11 +29,10 @@ const DailyLogForm = () => {
 
   const initialFormState = useMemo(() => ({
     temp: 36.5,
-    weight: userProfile.weight || 60.0,
     isPooped: null, mood: '', memo: '', waterIntake: 1500,
     symptoms: {}, 
     sleep: null, stress: null, alcohol: null,
-  }), [userProfile.weight]);
+  }), []);
 
   const [formData, setFormData] = useState(initialFormState);
 
@@ -42,7 +41,6 @@ const DailyLogForm = () => {
       setFormData({
         ...initialFormState, ...logForDate,
         temp: logForDate.temp !== undefined ? parseFloat(logForDate.temp) : 36.5,
-        weight: logForDate.weight !== undefined ? parseFloat(logForDate.weight) : (userProfile.weight || 60.0),
         waterIntake: logForDate.waterIntake !== undefined ? logForDate.waterIntake : 1500,
       });
       setIsLocked(true);
@@ -52,7 +50,7 @@ const DailyLogForm = () => {
     }
     setShowSuccess(false);
     setShowSubItems(false);
-  }, [dateStr, logForDate, initialFormState, userProfile.weight]);
+  }, [dateStr, logForDate, initialFormState]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -143,13 +141,8 @@ const DailyLogForm = () => {
           <div className={styles.subSection}><button type="button" className={styles.toggleButton} onClick={() => setShowSubItems(!showSubItems)}>その他項目を記録する {showSubItems ? '▲' : '▼'}</button>
             {showSubItems && (
               <div className={styles.subContent}>
-                <div className={styles.formGroup}>
-                  <div className={styles.tempLabel}>体重</div>
-                  <div className={styles.tempContainer}>
-                    <div className={styles.tempDisplay}>{typeof formData.weight === 'number' ? formData.weight.toFixed(1) : '...'}<span>kg</span></div>
-                    <Slider min={30.0} max={150.0} step={0.1} value={formData.weight} onChange={(val) => handleFormChange('weight', val)} trackStyle={{ backgroundColor: '#bbf7d0' }} handleStyle={{ borderColor: '#22c55e' }} railStyle={{ backgroundColor: '#e5e7eb' }} />
-                  </div>
-                </div>
+                
+                {/* 体重のブロック全体を削除 */}
 
                 <div className={styles.formGroup}><label>睡眠の質</label><div className={styles.buttonGroup}>{Object.entries(SLEEP_OPTIONS).map(([key, label]) => (<button key={key} type="button" className={`${styles.iconButton} ${formData.sleep === key ? styles.selected : ''}`} onClick={() => handleFormChange('sleep', key)}><span className={styles.buttonIcon}>{SLEEP_ICONS[key]}</span><span className={styles.buttonLabel}>{label}</span></button>))}</div></div>
                 <div className={styles.formGroup}><label>ストレス</label><div className={styles.buttonGroup}>{Object.entries(STRESS_OPTIONS).map(([key, label]) => (<button key={key} type="button" className={`${styles.iconButton} ${formData.stress === key ? styles.selected : ''}`} onClick={() => handleFormChange('stress', key)}><span className={styles.buttonIcon}>{STRESS_ICONS[key]}</span><span className={styles.buttonLabel}>{label}</span></button>))}</div></div>

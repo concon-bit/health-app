@@ -147,11 +147,6 @@ body {
 .day-bg-ok   { background-color: var(--day-bg-ok); }
 .day-bg-bad  { background-color: var(--day-bg-bad); }
 
-/* --- 生理周期カレンダーの背景色 --- */
-.day-period-bg { background-color: rgba(239, 71, 111, 0.1); }
-.day-predicted-period-bg { background-color: rgba(239, 71, 111, 0.05); }
-.day-fertile-bg { background-color: rgba(74, 222, 128, 0.1); }
-
 /* --- FullCalendar の基本的なカスタムスタイル --- */
 .fc .fc-col-header-cell-cushion { text-decoration: none !important; }
 .fc-day-sun .fc-col-header-cell-cushion { color: red !important; }

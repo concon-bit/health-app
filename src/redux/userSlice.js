@@ -1,27 +1,10 @@
 // src/redux/userSlice.js
 
-import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import { fetchUserProfile, saveUserProfile } from '../services/firebaseService';
-
-// [非同期処理] ユーザープロファイルを取得
-export const fetchProfile = createAsyncThunk('user/fetchProfile', async (userId) => {
-  const profile = await fetchUserProfile(userId);
-  return profile;
-});
-
-// [非同期処理] ユーザープロファイルを保存
-export const saveProfile = createAsyncThunk('user/saveProfile', async ({ userId, profileData }) => {
-  await saveUserProfile(userId, profileData);
-  return profileData;
-});
+import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
   currentUser: null,
-  profile: {
-    weight: '', // ユーザーの体重
-  },
   loading: true,
-  profileLoading: 'idle',
 };
 
 const userSlice = createSlice({
@@ -37,19 +20,7 @@ const userSlice = createSlice({
     },
   },
   extraReducers: (builder) => {
-    builder
-      .addCase(fetchProfile.pending, (state) => {
-        state.profileLoading = 'pending';
-      })
-      .addCase(fetchProfile.fulfilled, (state, action) => {
-        state.profileLoading = 'succeeded';
-        if (action.payload) {
-          state.profile = { ...state.profile, ...action.payload };
-        }
-      })
-      .addCase(saveProfile.fulfilled, (state, action) => {
-        state.profile = { ...state.profile, ...action.payload };
-      });
+    // プロファイル関連の extraReducers はすべて削除
   },
 });
 

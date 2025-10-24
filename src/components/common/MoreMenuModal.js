@@ -4,7 +4,7 @@ import styles from '../../styles/MoreMenuModal.module.css';
 import { useDispatch } from 'react-redux';
 import { setActiveMode, toggleMoreMenu } from '../../redux/uiSlice';
 import { logout } from '../../services/firebaseService';
-import { FaHeartbeat, FaVenus, FaPills, FaRunning, FaSignOutAlt, FaUserCog } from 'react-icons/fa'; 
+import { FaHeartbeat, FaSignOutAlt } from 'react-icons/fa'; 
 
 const MoreMenuModal = () => {
   const dispatch = useDispatch();
@@ -31,13 +31,6 @@ const MoreMenuModal = () => {
       <div className={styles.modalContent} onClick={(e) => e.stopPropagation()}>
         <div className={styles.menuGrid}>
           <button className={styles.menuItem} onClick={() => handleModeSelect('health')}><FaHeartbeat /><span>体調管理</span></button>
-          <button className={styles.menuItem} onClick={() => handleModeSelect('period')}><FaVenus /><span>生理周期</span></button>
-          <button className={styles.menuItem} onClick={() => handleModeSelect('medication')}><FaPills /><span>服薬管理</span></button>
-          <button className={styles.menuItem} onClick={() => handleModeSelect('exercise')}><FaRunning /><span>運動記録</span></button>
-          <button className={styles.menuItem} onClick={() => handleModeSelect('profile')}>
-            <FaUserCog />
-            <span>プロフィール</span>
-          </button>
         </div>
         <div className={styles.footerActions}>
             <button className={styles.logoutButton} onClick={handleLogout}>

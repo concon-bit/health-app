@@ -3,7 +3,7 @@
 import React from 'react';
 import { FaHome, FaChartLine, FaCalendarAlt } from 'react-icons/fa';
 import { useSelector, useDispatch } from 'react-redux';
-import { setActiveMode, setActiveHealthTab, setSelectedDate, togglePeriodCalendar } from '../../redux/uiSlice';
+import { setActiveMode, setActiveHealthTab, setSelectedDate } from '../../redux/uiSlice';
 
 const Header = () => {
     const dispatch = useDispatch();
@@ -47,11 +47,6 @@ const Header = () => {
                             <FaCalendarAlt />
                         </button>
                     </>
-                )}
-                {activeMode === 'period' && (
-                     <button className="header-icon-button" onClick={() => dispatch(togglePeriodCalendar())}>
-                        <FaCalendarAlt />
-                    </button>
                 )}
             </div>
         </header>

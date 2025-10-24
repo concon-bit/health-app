@@ -1,14 +1,13 @@
 // src/components/features/health/Chart.js
 
-import React, { useState } from 'react';
+import React, { useMemo } from 'react';
 import Highcharts from 'highcharts';
 import HighchartsReact from 'highcharts-react-official';
-import { format, isValid } from 'date-fns';
-import { MOOD_ICONS } from '../../../constants/iconConstants';
 import styles from './HealthDashboard.module.css';
-import { FaCog } from 'react-icons/fa';
-import ReactDOMServer from 'react-dom/server';
 import { useSelector } from 'react-redux';
+// ▼▼▼ [修正] addDays と subDays をインポートします ▼▼▼
+import { isValid, subDays, addDays } from 'date-fns';
+// ▲▲▲ [修正] ▲▲▲
 
 Highcharts.setOptions({
     lang: { shortMonths: ['1月', '2月', '3月', '4月', '5月', '6月', '7月', '8月', '9月', '10月', '11月', '12月'], weekdays: ['日', '月', '火', '水', '木', '金', '土'] },
@@ -17,76 +16,97 @@ Highcharts.setOptions({
 
 const Chart = () => {
     const { items: logs, loading } = useSelector((state) => state.logs) || { items: [] };
-    const [isSettingsOpen, setIsSettingsOpen] = useState(false);
-    const [showWater, setShowWater] = useState(false);
-    const [showMood, setShowMood] = useState(true);
 
     if (loading) return <p>グラフを読み込み中...</p>;
-    const validLogs = Array.isArray(logs) ? logs.filter(log => log && log.date && isValid(new Date(log.date))) : [];
-    if (validLogs.length === 0) return <p>グラフを表示する記録がありません。</p>;
-
-    const sortedLogs = [...validLogs].sort((a, b) => new Date(a.date) - new Date(b.date));
-    const categories = sortedLogs.map(log => format(new Date(log.date + 'T00:00:00'), 'M/d'));
-    const tempData = sortedLogs.map(log => log.temp ? parseFloat(log.temp) : null);
-    const waterData = sortedLogs.map(log => log.waterIntake !== undefined ? log.waterIntake : null);
     
-    const moodIconData = sortedLogs.map((log, index) => {
-        if (!log.mood || !log.temp) return null;
-        return { x: index, y: parseFloat(log.temp) + 0.3, mood: log.mood };
-    }).filter(Boolean);
+    const validLogs = Array.isArray(logs) ? logs.filter(log => log && log.date && isValid(new Date(log.date))) : [];
+    const sortedLogs = [...validLogs].sort((a, b) => new Date(a.date) - new Date(b.date));
 
-    const yAxisConfig = [
-        { title: { text: '体温 (°C)', style: { color: Highcharts.getOptions().colors[0] } }, labels: { format: '{value} °C', style: { color: Highcharts.getOptions().colors[0] } }, min: 35.0, plotLines: [{ value: 37.5, color: 'red', dashStyle: 'shortdash', width: 2, label: { text: '発熱ライン' } }] }
-    ];
-    if (showWater) {
-        yAxisConfig.push({ title: { text: '水分摂取量 (ml)', style: { color: Highcharts.getOptions().colors[1] } }, labels: { format: '{value} ml', style: { color: Highcharts.getOptions().colors[1] } }, opposite: true });
+
+    if (sortedLogs.length === 0) {
+        return <p>グラフを表示する記録がありません。</p>;
     }
 
+    // データを Highcharts の datetime 形式 [timestamp, value] に変更
+    const tempData = sortedLogs.map(log => {
+        const timestamp = new Date(log.date + 'T00:00:00').getTime();
+        return [timestamp, log.temp ? parseFloat(log.temp) : null];
+    });
+
+    // ▼▼▼ [修正] デフォルトの表示範囲を「過去30日〜今日+1日」に設定 ▼▼▼
+    const today = new Date();
+    const thirtyDaysAgo = subDays(today, 30);
+
+    const xAxisMin = thirtyDaysAgo.getTime();
+    const xAxisMax = addDays(today, 1).getTime(); // 今日+1日の余白
+    // ▲▲▲ [修正] ▲▲▲
+
+    // Y軸（縦軸）の設定
+    const yAxisConfig = [
+        { 
+            title: { text: '体温 (°C)', style: { color: Highcharts.getOptions().colors[0] } }, 
+            labels: { format: '{value} °C', style: { color: Highcharts.getOptions().colors[0] } }, 
+            min: 35.0, 
+            max: 38.5,
+        }
+    ];
+
     const options = {
-        chart: { type: 'spline' },
-        title: { text: '体調の推移' },
-        xAxis: { categories },
+        chart: { 
+            type: 'spline',
+            // ▼▼▼ [修正] スクロール(panning)を有効化し、ズームは無効化 ▼▼▼
+            zoomType: null, // ズームは無効
+            panning: true, // パン（スクロール）を有効化
+            panKey: null, // Shiftキー不要でドラッグ/スワイプ可能に
+            scrollablePlotArea: {
+                minWidth: 1500, // スクロールできる全幅（この値が大きいほど過去に遡れます）
+                scrollPositionX: 1 // 初期スクロール位置を一番右（最新）に設定
+            }
+            // ▲▲▲ [修正] ▲▲▲
+        },
+        title: { text: null }, 
+        xAxis: { 
+            type: 'datetime',
+            // ▼▼▼ [修正] X軸の表示範囲(min/max)はスクロールのため削除 ▼▼▼
+            // min: xAxisMin, // 削除
+            max: xAxisMax, // [修正] maxのみ設定し、初期表示の右端を今日+1日にする
+            // ▲▲▲ [修正] ▲▲▲
+            dateTimeLabelFormats: {
+                day: '%m/%d',
+                week: '%m/%d',
+                month: '%Y/%m',
+                year: '%Y'
+            },
+            // ▼▼▼ [修正] X軸のラベルを強制的に5日間隔に設定 ▼▼▼
+            tickInterval: 5 * 24 * 3600 * 1000, // 5日（ミリ秒）
+            // ▲▲▲ [修正] ▲▲▲
+        },
         yAxis: yAxisConfig,
         series: [
-            { name: '体温', data: tempData, yAxis: 0, zIndex: 1, marker: { symbol: 'circle', radius: 4 } },
-            { name: '水分摂取量', type: 'column', data: waterData, yAxis: showWater ? 1 : 0, visible: showWater },
-            {
-                name: '気分', type: 'scatter', data: moodIconData, yAxis: 0, visible: showMood,
-                marker: { symbol: 'circle', radius: 0, states: { hover: { enabled: false } } },
-                dataLabels: {
-                    enabled: true, useHTML: true,
-                    formatter: function() {
-                        const iconComponent = MOOD_ICONS[this.point.mood];
-                        if (iconComponent) {
-                            // [修正点] SVG文字列を<span>タグで囲むことで警告を解消
-                            return '<span>' + ReactDOMServer.renderToString(iconComponent) + '</span>';
-                        }
-                        return '';
-                    },
-                    style: { fontSize: '18px', cursor: 'default' }, y: -10
-                },
-                showInLegend: false,
+            { 
+                name: '体温', 
+                data: tempData, 
+                yAxis: 0, 
+                zIndex: 1, 
+                marker: { symbol: 'circle', radius: 4 },
+                connectNulls: true
             }
         ],
-        legend: { enabled: false },
-        tooltip: { enabled: false },
+        legend: { 
+            enabled: false
+        },
+        tooltip: {
+            enabled: true, 
+            shared: false, 
+            headerFormat: '', 
+            pointFormat: '<b>{point.y:.2f} °C</b>' 
+        },
         accessibility: { enabled: false }
     };
 
     return (
         <div className={styles.chartContainer}>
-            <button className={styles.settingsButton} onClick={() => setIsSettingsOpen(true)}><FaCog /></button>
             <HighchartsReact highcharts={Highcharts} options={options} />
-            {isSettingsOpen && (
-                <div className={styles.modalBackdrop} onClick={() => setIsSettingsOpen(false)}>
-                    <div className={styles.modalContent} onClick={(e) => e.stopPropagation()}>
-                        <h3>グラフ表示設定</h3>
-                        <div className={styles.settingItem}><span>水分量を表示する</span><label className={styles.switch}><input type="checkbox" checked={showWater} onChange={() => setShowWater(!showWater)} /><span className={styles.slider}></span></label></div>
-                        <div className={styles.settingItem}><span>気分アイコンを表示する</span><label className={styles.switch}><input type="checkbox" checked={showMood} onChange={() => setShowMood(!showMood)} /><span className={styles.slider}></span></label></div>
-                        <button className={styles.closeButton} onClick={() => setIsSettingsOpen(false)}>閉じる</button>
-                    </div>
-                </div>
-            )}
         </div>
     );
 };
