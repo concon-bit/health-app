@@ -1,14 +1,14 @@
 // src/services/firebaseService.js
 
 import { auth, googleProvider, db } from '../firebase';
-// [修正] signInWithRedirect を signInWithPopup に戻します
 import { signInWithPopup, onAuthStateChanged, signOut } from "firebase/auth";
-import { collection, query, where, getDocs, addDoc, doc, setDoc, getDoc } from "firebase/firestore";
+// ▼▼▼ [修正] 'getDoc' を削除 ▼▼▼
+import { collection, query, where, getDocs, addDoc, doc, setDoc } from "firebase/firestore";
+// ▲▲▲ [修正] ▲▲▲
 
 // --- Authentication ---
 export const onAuthChange = (callback) => { return onAuthStateChanged(auth, callback); };
 
-// [修正] ログイン方式をポップアップ方式に戻します
 export const loginWithGoogle = () => {
   return signInWithPopup(auth, googleProvider);
 };
