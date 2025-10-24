@@ -165,11 +165,12 @@ body {
 }
 .calendar-event-icons {
     display: flex;
-    gap: 6px;
+    gap: 2px;
     justify-content: center;
     align-items: center;
     width: 100%;
     font-size: 1.4rem;
+    margin-top: -2px; /* 位置調整 */
 }
 
 /* --- 画面遷移アニメーション --- */

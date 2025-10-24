@@ -1,12 +1,12 @@
 // src/constants/iconConstants.js
 
 import React from 'react';
-import { 
+import {
   FaGrinStars, FaSmile, FaMeh, FaFrown, FaTired,
-  FaRegCheckCircle, FaRegTimesCircle, FaHeadSideVirus, FaGlassMartiniAlt, // FaDumbbell を削除
-  FaBed, FaGrinBeam, FaMehRollingEyes, FaTired as FaTiredStress, FaBeer
+  FaRegCheckCircle, FaRegTimesCircle, FaHeadSideVirus, FaGlassMartiniAlt,
+  FaBed, FaGrinBeam, FaMehRollingEyes, FaTired as FaTiredStress, FaBeer,
+  FaStar // FaPoo の代わりに FaStar をインポート
 } from 'react-icons/fa';
-import { BsFillCircleFill } from 'react-icons/bs';
 
 export const MOOD_ICONS = {
   '絶好調': <FaGrinStars style={{ color: '#ef476f' }} />,
@@ -21,15 +21,15 @@ export const POOP_ICONS = {
   'なし': <FaRegTimesCircle style={{ color: '#a3a3a3' }} />
 };
 
-export const POOP_CALENDAR_ICON = <BsFillCircleFill style={{ color: '#8B4513' }} />;
+// ▼▼▼ [修正] 星アイコンの色を黄色に変更 ▼▼▼
+export const POOP_CALENDAR_ICON = <FaStar style={{ color: '#FFC107' }} />; // 黄色に変更
+// ▲▲▲ [修正] ▲▲▲
 
-// --- [修正] 'exercise'のアイコンを削除 ---
 export const SYMPTOM_ICONS = {
   'headache': <FaHeadSideVirus />,
   'hangover': <FaGlassMartiniAlt />
 };
 
-// --- [元に戻す] 睡眠、ストレス、飲酒のアイコン定義はそのまま ---
 export const SLEEP_ICONS = {
   'good': <FaBed style={{ color: '#8b5cf6' }} />,
   'normal': <FaBed style={{ color: '#a3a3a3' }} />,

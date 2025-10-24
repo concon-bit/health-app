@@ -1,12 +1,12 @@
 // src/components/features/health/Chart.js
 
-import React from 'react';
+import React from 'react'; // useMemo を削除
 import Highcharts from 'highcharts';
 import HighchartsReact from 'highcharts-react-official';
 import styles from './HealthDashboard.module.css';
 import { useSelector } from 'react-redux';
-// ▼▼▼ [修正] 'subDays' を削除します ▼▼▼
-import { isValid, addDays } from 'date-fns';
+// ▼▼▼ [修正] addDays と subDays をインポートします ▼▼▼
+import { isValid, subDays, addDays } from 'date-fns';
 // ▲▲▲ [修正] ▲▲▲
 
 Highcharts.setOptions({
@@ -33,9 +33,13 @@ const Chart = () => {
         return [timestamp, log.temp ? parseFloat(log.temp) : null];
     });
 
-    // 'thirtyDaysAgo' と 'xAxisMin' を削除
+    // ▼▼▼ [修正] X軸の表示範囲を「過去30日〜今日+1日」に設定 ▼▼▼
     const today = new Date();
+    const thirtyDaysAgo = subDays(today, 30);
+
+    const xAxisMin = thirtyDaysAgo.getTime();
     const xAxisMax = addDays(today, 1).getTime(); // 今日+1日の余白
+    // ▲▲▲ [修正] ▲▲▲
 
     // Y軸（縦軸）の設定
     const yAxisConfig = [
@@ -50,25 +54,28 @@ const Chart = () => {
     const options = {
         chart: { 
             type: 'spline',
+            // ▼▼▼ [修正] スクロール(panning)とズームを完全に無効化 ▼▼▼
             zoomType: null,
-            panning: true, 
-            panKey: null, 
-            scrollablePlotArea: {
-                minWidth: 1500, 
-                scrollPositionX: 1 
-            }
+            panning: false, 
+            panKey: 'none'
+            // ▲▲▲ [修正] ▲▲▲
         },
         title: { text: null }, 
         xAxis: { 
             type: 'datetime',
-            max: xAxisMax, 
+            // ▼▼▼ [修正] X軸の表示範囲を固定 ▼▼▼
+            min: xAxisMin,
+            max: xAxisMax,
+            // ▲▲▲ [修正] ▲▲▲
             dateTimeLabelFormats: {
                 day: '%m/%d',
                 week: '%m/%d',
-                month: '%Y/%m',
-                year: '%Y'
+                month: '%Y/%m', // 月表示のフォーマット（念のため）
+                year: '%Y' // 年表示のフォーマット（念のため）
             },
-            tickInterval: 5 * 24 * 3600 * 1000, 
+            // ▼▼▼ [修正] tickIntervalを削除し、Highchartsの自動調整に任せる ▼▼▼
+            // tickInterval: 5 * 24 * 3600 * 1000, 
+            // ▲▲▲ [修正] ▲▲▲
         },
         yAxis: yAxisConfig,
         series: [
