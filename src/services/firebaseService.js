@@ -1,7 +1,8 @@
 // src/services/firebaseService.js
 
 import { auth, googleProvider, db } from '../firebase';
-import { signInWithPopup, onAuthStateChanged, signOut } from "firebase/auth";
+// ▼▼▼ [修正] 'signInWithPopup' に加えて、'setPersistence' と 'browserLocalPersistence' をインポート ▼▼▼
+import { signInWithPopup, onAuthStateChanged, signOut, setPersistence, browserLocalPersistence } from "firebase/auth";
 // ▼▼▼ [修正] 'getDoc' を削除 ▼▼▼
 import { collection, query, where, getDocs, addDoc, doc, setDoc } from "firebase/firestore";
 // ▲▲▲ [修正] ▲▲▲
@@ -9,9 +10,27 @@ import { collection, query, where, getDocs, addDoc, doc, setDoc } from "firebase
 // --- Authentication ---
 export const onAuthChange = (callback) => { return onAuthStateChanged(auth, callback); };
 
-export const loginWithGoogle = () => {
-  return signInWithPopup(auth, googleProvider);
+// ▼▼▼ [ここから修正] ログイン処理の直前に永続化設定を行うように変更 ▼▼▼
+export const loginWithGoogle = async () => {
+  try {
+    // 1. 最初に「認証状態をローカルに保存する」設定（ずっと継続する設定）を実行します
+    await setPersistence(auth, browserLocalPersistence);
+    
+    // 2. 永続化設定が完了してから、ポップアップでログインを実行します
+    return signInWithPopup(auth, googleProvider);
+    
+  } catch (error) {
+    // エラーハンドリングを強化
+    if (error.code === 'auth/missing-or-invalid-nonce') {
+        console.error("認証エラー(nonce):", error);
+        alert("認証に失敗しました。ブラウザのストレージ設定（サードパーティCookieなど）を確認してください。");
+    } else {
+        console.error("Firebase 永続化設定 または ログインに失敗:", error);
+    }
+    throw error;
+  }
 };
+// ▲▲▲ [ここまで修正] ▲▲▲
 
 export const logout = () => { return signOut(auth); };
 
