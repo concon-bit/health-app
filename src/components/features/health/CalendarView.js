@@ -1,7 +1,7 @@
 // src/components/features/health/CalendarView.js
 
 import React, { useState, useMemo, useCallback } from 'react';
-import jaLocale from '@fullcalendar/core/locales/ja'; // <<< [修正] 正式なロケールファイルをインポート
+import jaLocale from '@fullcalendar/core/locales/ja';
 import { MOOD_ICONS, POOP_CALENDAR_ICON } from '../../../constants/iconConstants';
 import FullCalendar from '@fullcalendar/react';
 import dayGridPlugin from '@fullcalendar/daygrid';
@@ -16,6 +16,7 @@ const CalendarView = () => {
     const [selectedLog, setSelectedLog] = useState(null);
     const dispatch = useDispatch();
 
+    // logsByDate は日付をキーにしたMapで、日付ごとのログをユニークに保ちます
     const logsByDate = useMemo(() => {
         const map = new Map();
         if (logs) {
@@ -24,16 +25,27 @@ const CalendarView = () => {
         return map;
     }, [logs]);
 
+    // ▼▼▼ [ここから修正] ▼▼▼
+    // `logs` 配列ではなく、ユニークな `logsByDate` (Map) を使ってイベントを生成します
     const calendarEvents = useMemo(() => {
-        if (!logs) return [];
-        return logs
-            .filter(log => log.isPooped === 'yes' || log.mood)
-            .map(log => ({
-                date: log.date, 
-                className: 'calendar-event',
-                extendedProps: { logData: log }
-            }));
-    }, [logs]);
+        if (!logsByDate) return [];
+        
+        const events = [];
+        // Map (logsByDate) をイテレートします
+        logsByDate.forEach((log, date) => {
+            // イベントを表示する条件 (排便あり または 気分が記録されている)
+            if (log && (log.isPooped === 'yes' || log.mood)) {
+                events.push({
+                    date: date, // Mapのキー (日付文字列)
+                    className: 'calendar-event',
+                    extendedProps: { logData: log }
+                });
+            }
+        });
+        return events;
+
+    }, [logsByDate]); // 依存配列を [logs] から [logsByDate] に変更します
+    // ▲▲▲ [ここまで修正] ▲▲▲
 
     const renderEventContent = (eventInfo) => {
         const { isPooped, mood } = eventInfo.event.extendedProps.logData;
@@ -84,7 +96,7 @@ const CalendarView = () => {
             <FullCalendar
                 plugins={[dayGridPlugin, interactionPlugin]}
                 initialView="dayGridMonth"
-                locale={jaLocale} // <<< [修正] インポートしたロケールファイルを指定
+                locale={jaLocale}
                 events={calendarEvents}
                 dateClick={handleDateClick}
                 dayCellContent={dayCellContent}

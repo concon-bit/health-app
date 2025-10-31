@@ -6,8 +6,7 @@ import Slider from 'rc-slider';
 import 'rc-slider/assets/index.css';
 import { MOOD_OPTIONS, POOP_OPTIONS, SYMPTOM_OPTIONS, SLEEP_OPTIONS, STRESS_OPTIONS, ALCOHOL_OPTIONS } from '../../../constants/appConstants';
 import { MOOD_ICONS, POOP_ICONS, SYMPTOM_ICONS, SLEEP_ICONS, STRESS_ICONS, ALCOHOL_ICONS } from '../../../constants/iconConstants';
-// ▼▼▼ [修正] 左右の矢印アイコンをインポートします ▼▼▼
-import { FaChevronLeft, FaChevronRight, FaLock, FaLockOpen, FaCaretLeft, FaCaretRight } from 'react-icons/fa';
+import { FaChevronLeft, FaChevronRight, FaLock, FaLockOpen, FaCaretLeft, FaCaretRight } from 'react-icons/fa'; // スワイプ関連のインポートは不要
 import styles from './DailyLogForm.module.css';
 import { useSelector, useDispatch } from 'react-redux';
 import { changeDateBy } from '../../../redux/uiSlice';
@@ -22,7 +21,11 @@ const DailyLogForm = () => {
   const dateStr = useMemo(() => format(selectedDate, 'yyyy-MM-dd'), [selectedDate]);
   const [showSuccess, setShowSuccess] = useState(false);
   const [showSubItems, setShowSubItems] = useState(false);
-  const [touchStartX, setTouchStartX] = useState(null);
+  
+  // ▼▼▼ [修正] スワイプ関連のstateを削除 ▼▼▼
+  // const [touchStartX, setTouchStartX] = useState(null);
+  // ▲▲▲ [修正] ▲▲▲
+
   const logForDate = useMemo(() => Array.isArray(logs) ? logs.find(log => log.date === dateStr) : undefined, [logs, dateStr]);
   const logExists = !!logForDate;
   const [isLocked, setIsLocked] = useState(logExists);
@@ -76,7 +79,6 @@ const DailyLogForm = () => {
     setFormData(prev => ({ ...prev, [field]: value }));
   };
 
-  // ▼▼▼ [追加] 体温を微調整する関数 ▼▼▼
   const adjustTemp = (amount) => {
     setFormData(prev => {
         const newTemp = parseFloat((prev.temp + amount).toFixed(2));
@@ -94,6 +96,8 @@ const DailyLogForm = () => {
     }));
   };
 
+  // ▼▼▼ [修正] スワイプ関連のハンドラ関数を削除 ▼▼▼
+  /*
   const handleTouchStart = (e) => setTouchStartX(e.targetTouches[0].clientX);
   const handleTouchEnd = (e) => {
     if (touchStartX === null) return;
@@ -104,13 +108,17 @@ const DailyLogForm = () => {
     }
     setTouchStartX(null);
   };
+  */
+  // ▲▲▲ [修正] ▲▲▲
 
   const isFormDisabled = logExists && isLocked;
   const isButtonDisabled = logExists && isLocked;
 
+  // ▼▼▼ [修正] divからスワイプイベントハンドラを削除 ▼▼▼
   return (
-    <div className={styles.formContainer} onTouchStart={handleTouchStart} onTouchEnd={handleTouchEnd}>
+    <div className={styles.formContainer}>
       <div className={styles.dateNavContainer}>
+        {/* ... (残りのJSXは変更なし) ... */}
         <button className={styles.dateNavButton} onClick={() => dispatch(changeDateBy(-1))}><FaChevronLeft /></button>
         <div className={styles.dateHeader}>
           <h3>{format(selectedDate, 'yyyy年M月d日')}</h3>
@@ -124,13 +132,11 @@ const DailyLogForm = () => {
           <div className={styles.formGroup}>
             <div className={styles.tempLabel}>体温</div>
             <div className={styles.tempContainer}>
-              {/* ▼▼▼ [ここから修正] ▼▼▼ */}
               <div className={styles.tempControlWrapper}>
                 <button type="button" onClick={() => adjustTemp(-0.01)} className={styles.tempAdjustButton}><FaCaretLeft /></button>
                 <div className={styles.tempDisplay}>{typeof formData.temp === 'number' ? formData.temp.toFixed(2) : '...'}<span>°C</span></div>
                 <button type="button" onClick={() => adjustTemp(0.01)} className={styles.tempAdjustButton}><FaCaretRight /></button>
               </div>
-              {/* ▲▲▲ [ここまで修正] ▲▲▲ */}
               <Slider min={35.0} max={42.0} step={0.01} value={formData.temp} onChange={(val) => handleFormChange('temp', val)} trackStyle={{ backgroundColor: '#fecdd3' }} handleStyle={{ borderColor: '#ef476f' }} railStyle={{ backgroundColor: '#e5e7eb' }} />
             </div>
           </div>
@@ -141,9 +147,6 @@ const DailyLogForm = () => {
           <div className={styles.subSection}><button type="button" className={styles.toggleButton} onClick={() => setShowSubItems(!showSubItems)}>その他項目を記録する {showSubItems ? '▲' : '▼'}</button>
             {showSubItems && (
               <div className={styles.subContent}>
-                
-                {/* 体重のブロック全体を削除 */}
-
                 <div className={styles.formGroup}><label>睡眠の質</label><div className={styles.buttonGroup}>{Object.entries(SLEEP_OPTIONS).map(([key, label]) => (<button key={key} type="button" className={`${styles.iconButton} ${formData.sleep === key ? styles.selected : ''}`} onClick={() => handleFormChange('sleep', key)}><span className={styles.buttonIcon}>{SLEEP_ICONS[key]}</span><span className={styles.buttonLabel}>{label}</span></button>))}</div></div>
                 <div className={styles.formGroup}><label>ストレス</label><div className={styles.buttonGroup}>{Object.entries(STRESS_OPTIONS).map(([key, label]) => (<button key={key} type="button" className={`${styles.iconButton} ${formData.stress === key ? styles.selected : ''}`} onClick={() => handleFormChange('stress', key)}><span className={styles.buttonIcon}>{STRESS_ICONS[key]}</span><span className={styles.buttonLabel}>{label}</span></button>))}</div></div>
                 <div className={styles.formGroup}><label>飲酒</label><div className={styles.buttonGroup}>{Object.entries(ALCOHOL_OPTIONS).map(([key, label]) => (<button key={key} type="button" className={`${styles.iconButton} ${formData.alcohol === key ? styles.selected : ''}`} onClick={() => handleFormChange('alcohol', key)}><span className={styles.buttonIcon}>{ALCOHOL_ICONS[key]}</span><span className={styles.buttonLabel}>{label}</span></button>))}</div></div>
@@ -158,6 +161,7 @@ const DailyLogForm = () => {
         {logLoading ? '処理中...' : (showSuccess ? '保存しました ✔' : (logExists ? '更新する' : '記録する'))}
       </button>
     </div>
+    // ▲▲▲ [修正] ▲▲▲
   );
 };
 
